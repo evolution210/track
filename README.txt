@@ -52,7 +52,7 @@ CPU 사용량등의 정보를 MakeStat함수를 사용해 저장합니다.
 
 4. 실행 방법
 
-	clean : Object file 제거
+	make clean : Object file 제거
 
 	make : track 실행 프로그램 생성
 	
