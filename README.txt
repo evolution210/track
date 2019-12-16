@@ -4,54 +4,56 @@ Team Project : Implement Linux Built-in Command 'top'
 Problem description
 *****************************************************************
 Authorized by
-2013049101 È²ÀÎ½Â
-2017118012 ¿¹ÁøÈ­
-2013002085 ÃÖ±â¶ô
+2013049101 í™©ì¸ìŠ¹
+2017118012 ì˜ˆì§„í™”
+2013002085 ìµœê¸°ë½
 *****************************************************************
 
-1. ÇÁ·Î±×·¥ ½ÇÇà °³³ä
+ Htop ì„ ëª©ì ìœ¼ë¡œ topì„ êµ¬í˜„í•œ í”„ë¡œì„¸ìŠ¤ ê´€ë¦¬ í”„ë¡œê·¸ëž¨ìž…ë‹ˆë‹¤.
 
-1.1. ÇÁ·Î±×·¥À» ½ÇÇàÇÏ¸é ½Ã½ºÅÛ¿¡ Á¸ÀçÇÏ´Â ÇÁ·Î¼¼½ºµéÀ» ºÒ·¯¿Í ±×µéÀÇ PID¿Í CPU, ¸Þ¸ð¸® »ç¿ë·® °è»êµî¿¡ ÇÊ¿äÇÑ
-ÀüÃ¼ ½Ã½ºÅÛÀÇ UPTIMEµîÀÇ Á¤º¸¸¦ ÀúÀåÇÕ´Ï´Ù. 
+1. í”„ë¡œê·¸ëž¨ ì‹¤í–‰ ê°œë…
 
-1.2. ¹Þ¾Æ¿Â PID¸¦ ±â¹ÝÀ¸·Î PROC filesystemÁß ÇÁ·Î¼¼½ºµéÀÇ Á¤º¸°¡ µé¾îÀÖ´Â /proc/PID/status¸¦ »ç¿ëÇÏ¿© ÇÁ·Î¼¼½ºÀÇ À¯Àú, Priority, Nice value, 
-CPU »ç¿ë·®µîÀÇ Á¤º¸¸¦ MakeStatÇÔ¼ö¸¦ »ç¿ëÇØ ÀúÀåÇÕ´Ï´Ù.
+1.1. í”„ë¡œê·¸ëž¨ì„ ì‹¤í–‰í•˜ë©´ ì‹œìŠ¤í…œì— ì¡´ìž¬í•˜ëŠ” í”„ë¡œì„¸ìŠ¤ë“¤ì„ ë¶ˆëŸ¬ì™€ ê·¸ë“¤ì˜ PIDì™€ CPU, ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰ ê³„ì‚°ë“±ì— í•„ìš”í•œ
+ì „ì²´ ì‹œìŠ¤í…œì˜ UPTIMEë“±ì˜ ì •ë³´ë¥¼ ì €ìž¥í•©ë‹ˆë‹¤. 
 
-1.3 ¹Þ¾Æ¿Â ÀüÃ¼ ½Ã½ºÅÛ°ú ÇÁ·Î¼¼½ºÀÇ Á¤º¸µéÀ» 1ÃÊ ´ÜÀ§·Î ¾÷µ¥ÀÌÆ® ÇØ¼­ Ãâ·ÂÇÕ´Ï´Ù.
+1.2. ë°›ì•„ì˜¨ PIDë¥¼ ê¸°ë°˜ìœ¼ë¡œ PROC filesystemì¤‘ í”„ë¡œì„¸ìŠ¤ë“¤ì˜ ì •ë³´ê°€ ë“¤ì–´ìžˆëŠ” /proc/PID/statusë¥¼ ì‚¬ìš©í•˜ì—¬ í”„ë¡œì„¸ìŠ¤ì˜ ìœ ì €, Priority, Nice value, 
+CPU ì‚¬ìš©ëŸ‰ë“±ì˜ ì •ë³´ë¥¼ MakeStatí•¨ìˆ˜ë¥¼ ì‚¬ìš©í•´ ì €ìž¥í•©ë‹ˆë‹¤.
 
-
-2. ±¸Çö ±â´É
-
-	HelpPage	: ±âÁ¸ TOP/HTOP Ä¿¸àµåÀÇ help pageÃ³·³ ÇÁ·Î±×·¥ÀÇ ±âº»ÀûÀÎ ¼³¸í°ú ±¸ÇöÇÑ ±â´ÉµéÀ» ¼³¸íÇÏ´Â ÆäÀÌÁö ÀÔ´Ï´Ù.
-
-	Á¤·Ä	: ÇÁ·Î±×·¥ ÃÖÃÊ ½ÇÇà½Ã¿¡´Â PID ¼øÀ¸·Î ÇÁ·Î¼¼½ºµéÀÌ Á¤·ÄµÇ¾î ÀÖ´Âµ¥ °¢°¢ PID, TIME, CPU»ç¿ë·®, ¸Þ¸ð¸®»ç¿ë·®
-		  ¼øÀ¸·Î ÇÁ·Î¼¼½ºµéÀ» ÀçÁ¤·Ä ÇÒ ¼ö ÀÖ½À´Ï´Ù.
-
-	KILL	: Ä¿¼­°¡ À§Ä¡ÇÑ ÇÁ·Î¼¼½º¸¦ KILL ÇÕ´Ï´Ù.
-
-	Renicing	: Ä¿¼­°¡ À§Ä¡ÇÑ ÇÁ·Î¼¼½ºÀÇ Priority ¿Í Nice valueÀÇ °ªÀ» 1 »ó½Â ¹× °¨¼ÒÇÒ ¼ö ÀÖ½À´Ï´Ù.
-
-	Quit	: ÇÁ·Î±×·¥À» Á¾·áÇÕ´Ï´Ù.
+1.3 ë°›ì•„ì˜¨ ì „ì²´ ì‹œìŠ¤í…œê³¼ í”„ë¡œì„¸ìŠ¤ì˜ ì •ë³´ë“¤ì„ 1ì´ˆ ë‹¨ìœ„ë¡œ ì—…ë°ì´íŠ¸ í•´ì„œ ì¶œë ¥í•©ë‹ˆë‹¤.
 
 
-3. ÁÖ¿ä ÇÔ¼ö ¼³¸í
+2. êµ¬í˜„ ê¸°ëŠ¥
 
-	MakeStat	: DirectoryÀÌ¸§À» ¹Þ¾Æ¿Í¼­ /proc/PID/status¸¦ »ç¿ëÇØ ÇÁ·Î¼¼½ºÀÇ Á¤º¸µéÀ» ÀÔ·Â¹Þ¾Æ ÀúÀåÇÏ°í »ç¿ëÇÏÁö ¾Ê´Â/ºÒÇÊ¿äÇÑ Á¤º¸µéÀº
-		  dummy º¯¼öµé¿¡ ÀúÀåÇÕ´Ï´Ù.
+	HelpPage	: ê¸°ì¡´ TOP/HTOP ì»¤ë©˜ë“œì˜ help pageì²˜ëŸ¼ í”„ë¡œê·¸ëž¨ì˜ ê¸°ë³¸ì ì¸ ì„¤ëª…ê³¼ êµ¬í˜„í•œ ê¸°ëŠ¥ë“¤ì„ ì„¤ëª…í•˜ëŠ” íŽ˜ì´ì§€ ìž…ë‹ˆë‹¤.
+
+	ì •ë ¬	: í”„ë¡œê·¸ëž¨ ìµœì´ˆ ì‹¤í–‰ì‹œì—ëŠ” PID ìˆœìœ¼ë¡œ í”„ë¡œì„¸ìŠ¤ë“¤ì´ ì •ë ¬ë˜ì–´ ìžˆëŠ”ë° ê°ê° PID, TIME, CPUì‚¬ìš©ëŸ‰, ë©”ëª¨ë¦¬ì‚¬ìš©ëŸ‰
+		  ìˆœìœ¼ë¡œ í”„ë¡œì„¸ìŠ¤ë“¤ì„ ìž¬ì •ë ¬ í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+
+	KILL	: ì»¤ì„œê°€ ìœ„ì¹˜í•œ í”„ë¡œì„¸ìŠ¤ë¥¼ KILL í•©ë‹ˆë‹¤.
+
+	Renicing	: ì»¤ì„œê°€ ìœ„ì¹˜í•œ í”„ë¡œì„¸ìŠ¤ì˜ Priority ì™€ Nice valueì˜ ê°’ì„ 1 ìƒìŠ¹ ë° ê°ì†Œí•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+
+	Quit	: í”„ë¡œê·¸ëž¨ì„ ì¢…ë£Œí•©ë‹ˆë‹¤.
+
+
+3. ì£¼ìš” í•¨ìˆ˜ ì„¤ëª…
+
+	MakeStat	: Directoryì´ë¦„ì„ ë°›ì•„ì™€ì„œ /proc/PID/statusë¥¼ ì‚¬ìš©í•´ í”„ë¡œì„¸ìŠ¤ì˜ ì •ë³´ë“¤ì„ ìž…ë ¥ë°›ì•„ ì €ìž¥í•˜ê³  ì‚¬ìš©í•˜ì§€ ì•ŠëŠ”/ë¶ˆí•„ìš”í•œ ì •ë³´ë“¤ì€
+		  dummy ë³€ìˆ˜ë“¤ì— ì €ìž¥í•©ë‹ˆë‹¤.
 	
-	setup	: Thread¸¦ »ç¿ëÇÏ¿© Á¤º¸¸¦ Á¤·ÄÇÏ°í Ãâ·ÂÇÕ´Ï´Ù. 
+	setup	: Threadë¥¼ ì‚¬ìš©í•˜ì—¬ ì •ë³´ë¥¼ ì •ë ¬í•˜ê³  ì¶œë ¥í•©ë‹ˆë‹¤. 
 
-	cpu_usage: ÇÁ·Î¼¼½º°¡ »ç¿ëÇÑ ÀüÃ¼ ½Ã°£À» ±¸ÇÏ°í ±× °ªÀ» ÇÁ·Î¼¼½ºÀÇ uptimeÀ¸·Î ³ª´©¾î CPU »ç¿ë·üÀ» °è»êÇÕ´Ï´Ù.
+	cpu_usage: í”„ë¡œì„¸ìŠ¤ê°€ ì‚¬ìš©í•œ ì „ì²´ ì‹œê°„ì„ êµ¬í•˜ê³  ê·¸ ê°’ì„ í”„ë¡œì„¸ìŠ¤ì˜ uptimeìœ¼ë¡œ ë‚˜ëˆ„ì–´ CPU ì‚¬ìš©ë¥ ì„ ê³„ì‚°í•©ë‹ˆë‹¤.
 
-	compare	: ÇÁ·Î±×·¥¿¡¼­ Ãâ·ÂÇÏ´Â ÇÁ·Î¼¼½ºµéÀ» Á¤·Ä ±â´ÉÀÇ ¿øÇÏ´Â Á¤·Ä ±âÁØÀ» ÀÔ·Â¹Þ¾Æ Á¤·ÄÇÕ´Ï´Ù.
+	compare	: í”„ë¡œê·¸ëž¨ì—ì„œ ì¶œë ¥í•˜ëŠ” í”„ë¡œì„¸ìŠ¤ë“¤ì„ ì •ë ¬ ê¸°ëŠ¥ì˜ ì›í•˜ëŠ” ì •ë ¬ ê¸°ì¤€ì„ ìž…ë ¥ë°›ì•„ ì •ë ¬í•©ë‹ˆë‹¤.
 
-	update_totalInfo :  ´Ü¼øÈ÷ ÇÁ·Î±×·¥ ½ÇÇà ½ÃÁ¡ÀÇ Á¤º¸°¡ ¾Æ´Ï¶ó ½Ç½Ã°£À¸·Î º¯ÇÏ´Â ÇÁ·Î¼¼½ºµéÀÇ Á¤º¸¸¦ ¾÷µ¥ÀÌÆ® ÇÏ±âÀ§ÇØ ÇÊ¿äÇÑ
-			CUP, ¸Þ¸ð¸®, uptime °ªµéÀ» Áö¼ÓÀûÀ¸·Î ¾÷µ¥ÀÌÆ® ÇØÁÝ´Ï´Ù. 
+	update_totalInfo :  ë‹¨ìˆœížˆ í”„ë¡œê·¸ëž¨ ì‹¤í–‰ ì‹œì ì˜ ì •ë³´ê°€ ì•„ë‹ˆë¼ ì‹¤ì‹œê°„ìœ¼ë¡œ ë³€í•˜ëŠ” í”„ë¡œì„¸ìŠ¤ë“¤ì˜ ì •ë³´ë¥¼ ì—…ë°ì´íŠ¸ í•˜ê¸°ìœ„í•´ í•„ìš”í•œ
+			CUP, ë©”ëª¨ë¦¬, uptime ê°’ë“¤ì„ ì§€ì†ì ìœ¼ë¡œ ì—…ë°ì´íŠ¸ í•´ì¤ë‹ˆë‹¤. 
 
-4. ½ÇÇà ¹æ¹ý
+4. ì‹¤í–‰ ë°©ë²•
 
-	clean : Object file Á¦°Å
+	clean : Object file ì œê±°
 
-	make : track ½ÇÇà ÇÁ·Î±×·¥ »ý¼º
+	make : track ì‹¤í–‰ í”„ë¡œê·¸ëž¨ ìƒì„±
 	
-	./track : ÇÁ·Î±×·¥ ½ÇÇà
+	./track : í”„ë¡œê·¸ëž¨ ì‹¤í–‰
